@@ -25,4 +25,4 @@ an individual is officially representing the community in public spaces.
 
 ## Contact
 
-Report issues to the maintainer via GitHub issues or email: `umutemreyilman66@gmail.com`.
+Report issues to the maintainer via GitHub issues or email: `realwespcai@gmail.com`.
