@@ -54,6 +54,24 @@ class NotFound(HigError):
     pass
 
 
+def resolve_slug(s: str | None) -> str:
+    """Normalize any slug, URL, or .json endpoint path to a pure HIG page slug."""
+    if not s:
+        return ""
+    s = s.strip()
+    if "#" in s:
+        s = s.split("#", 1)[0]
+    m = SLUG_IN_ID.search(s)
+    if m:
+        s = m.group(1)
+    s = s.strip().rstrip("/")
+    if s.endswith(".json"):
+        s = s[:-5]
+    if "/" in s:
+        s = s.rsplit("/", 1)[-1]
+    return s.strip().lower()
+
+
 # --------------------------------------------------------------------------- network
 
 def _get(url: str) -> str:
@@ -71,8 +89,10 @@ def _get(url: str) -> str:
 
 def fetch(slug=None, cache=True) -> dict:
     """Fetch the table of contents (slug=None) or one page as parsed JSON."""
-    if slug is not None and not SLUG_OK.match(slug):
-        raise NotFound(slug)
+    if slug is not None:
+        slug = resolve_slug(slug)
+        if not SLUG_OK.match(slug):
+            raise NotFound(slug)
     key = "_toc" if slug is None else slug
     f = CACHE / "pages" / f"{key}.json"
     if cache and f.exists() and time.time() - f.stat().st_mtime < PAGE_TTL:
@@ -120,7 +140,12 @@ def plain(nodes) -> str:
 
 def slug_of(identifier: str):
     m = SLUG_IN_ID.search(identifier or "")
-    return m.group(1).lower() if m else None
+    if not m:
+        return None
+    val = m.group(1).lower()
+    if val.endswith(".json"):
+        val = val[:-5]
+    return val
 
 
 def trim(s: str, n: int) -> str:
@@ -370,14 +395,23 @@ def select_blocks(blocks, platforms, full):
 
 
 def pick_section(blocks, query):
-    q = query.lower()
+    q = query.strip().lstrip("#").lower()
+    q_norm = q.replace(" ", "-").replace("_", "-")
     out, keep, lvl = [], False, 0
     for b in blocks:
         if b.get("type") == "heading":
+            b_text = b.get("text", "").lower()
+            b_anchor = (b.get("anchor") or "").lower()
+            b_norm = b_anchor.replace("_", "-")
+            b_text_norm = b_text.replace(" ", "-").replace("_", "-")
             if keep and b.get("level", 2) <= lvl:
                 keep = False
-            if not keep and (q in b.get("text", "").lower()
-                             or q.replace(" ", "-") == b.get("anchor", "").lower()):
+            if not keep and (
+                q in b_text
+                or q_norm == b_norm
+                or q_norm == b_text_norm
+                or (b_norm and b_norm.replace("-", " ") in q)
+            ):
                 keep, lvl = True, b.get("level", 2)
         if keep:
             out.append(b)
@@ -428,8 +462,12 @@ def render_page(doc: dict, slug: str, a) -> str:
 
 def cmd_page(a) -> int:
     code, shown = 0, []
-    for slug in a.slugs:
-        slug = slug.strip().lower().strip("/")
+    for raw_slug in a.slugs:
+        slug = resolve_slug(raw_slug)
+        if not slug:
+            print(f"error: invalid page slug '{raw_slug}'", file=sys.stderr)
+            code = 2
+            continue
         try:
             doc = fetch(slug, cache=not a.no_cache)
         except NotFound:
@@ -547,14 +585,18 @@ Read the guidelines directly from Apple's official JSON endpoints, not the web i
 
 
 def cmd_verify(a) -> int:
-    """Verify a citation in the format slug or slug#Anchor against the live HIG."""
+    """Verify a citation in the format slug, slug#Anchor, or full HIG URL against the live HIG."""
     target = a.citation.strip()
     if "#" in target:
-        slug, anchor = target.split("#", 1)
+        raw_slug, anchor = target.split("#", 1)
     else:
-        slug, anchor = target, ""
-    slug = slug.strip().lower().strip("/")
-    anchor = anchor.strip()
+        raw_slug, anchor = target, ""
+    slug = resolve_slug(raw_slug)
+    anchor = anchor.strip().lstrip("#")
+
+    if not slug:
+        print("INVALID: citation must include a valid page slug or URL (e.g. layout#Size-classes).", file=sys.stderr)
+        return 1
 
     try:
         doc = fetch(slug, cache=not a.no_cache)
@@ -575,12 +617,12 @@ def cmd_verify(a) -> int:
     blocks = [b for sec in doc.get("primaryContentSections", [])
               if sec.get("kind") == "content" for b in sec.get("content", [])]
     found_heading = None
-    target_anchor_norm = anchor.lower().replace(" ", "-")
+    target_anchor_norm = anchor.lower().replace(" ", "-").replace("_", "-")
 
     for b in blocks:
         if b.get("type") == "heading":
-            b_anchor = (b.get("anchor") or "").lower()
-            b_text_norm = (b.get("text") or "").lower().replace(" ", "-")
+            b_anchor = (b.get("anchor") or "").lower().replace("_", "-")
+            b_text_norm = (b.get("text") or "").lower().replace(" ", "-").replace("_", "-")
             if b_anchor == target_anchor_norm or b_text_norm == target_anchor_norm:
                 found_heading = b.get("text")
                 break

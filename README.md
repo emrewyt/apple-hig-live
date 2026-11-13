@@ -73,11 +73,11 @@ cd apple-hig-live
 
 ```powershell
 # Windows (PowerShell)
-.\install.ps1
+powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 # Or target Antigravity 2.0 or Claude specifically:
-.\install.ps1 -Target antigravity -Scope user
-.\install.ps1 -Target claude -Scope project
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -Target antigravity -Scope user
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -Target claude -Scope project
 ```
 
 #### Skill Destination Paths

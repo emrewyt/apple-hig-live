@@ -38,6 +38,6 @@ install_one() {
 
 case "$TARGET" in
   claude|codex|antigravity|gemini|cursor) install_one "$TARGET" ;;
-  all) for t in claude codex antigravity gemini; do install_one "$t"; done ;;
+  all) for t in claude codex antigravity gemini cursor; do install_one "$t"; done ;;
   *) echo "usage: $0 [claude|codex|antigravity|gemini|cursor|all] [user|project]" >&2; exit 1 ;;
 esac

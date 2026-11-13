@@ -24,8 +24,31 @@ class TestHigHelpers(unittest.TestCase):
             hig.slug_of("/design/human-interface-guidelines/tab-bars#Best-practices"),
             "tab-bars",
         )
+        self.assertEqual(
+            hig.slug_of("https://developer.apple.com/tutorials/data/design/human-interface-guidelines/color.json"),
+            "color",
+        )
         self.assertIsNone(hig.slug_of(None))
         self.assertIsNone(hig.slug_of("https://example.com/other/path"))
+
+    def test_resolve_slug(self):
+        self.assertEqual(hig.resolve_slug("layout"), "layout")
+        self.assertEqual(hig.resolve_slug("layout.json"), "layout")
+        self.assertEqual(hig.resolve_slug("/layout/"), "layout")
+        self.assertEqual(
+            hig.resolve_slug("https://developer.apple.com/design/human-interface-guidelines/layout"),
+            "layout",
+        )
+        self.assertEqual(
+            hig.resolve_slug("https://developer.apple.com/design/human-interface-guidelines/tab-bars#Best-practices"),
+            "tab-bars",
+        )
+        self.assertEqual(
+            hig.resolve_slug("https://developer.apple.com/tutorials/data/design/human-interface-guidelines/materials.json"),
+            "materials",
+        )
+        self.assertEqual(hig.resolve_slug(""), "")
+        self.assertEqual(hig.resolve_slug(None), "")
 
     def test_plain(self):
         nodes = [
@@ -191,10 +214,21 @@ class TestHigFilters(unittest.TestCase):
             {"type": "heading", "level": 2, "text": "Second Section", "anchor": "Second-Section"},
             {"type": "paragraph", "inlineContent": [{"type": "text", "text": "Second body"}]},
         ]
+        # Match by text
         picked = hig.pick_section(blocks, "Second Section")
         rendered = hig.Renderer({}).blocks(picked)
         self.assertNotIn("First body", rendered)
         self.assertIn("Second body", rendered)
+
+        # Match by anchor with leading hash
+        picked_hash = hig.pick_section(blocks, "#Second-Section")
+        rendered_hash = hig.Renderer({}).blocks(picked_hash)
+        self.assertIn("Second body", rendered_hash)
+
+        # Match by hyphenated lowercase
+        picked_norm = hig.pick_section(blocks, "second-section")
+        rendered_norm = hig.Renderer({}).blocks(picked_norm)
+        self.assertIn("Second body", rendered_norm)
 
 
 class TestHigNewCommands(unittest.TestCase):
@@ -239,12 +273,39 @@ class TestHigNewCommands(unittest.TestCase):
         }
 
         with patch("hig.fetch", return_value=sample_doc):
+            # Test simple slug#Anchor
             buf = io.StringIO()
             with patch("sys.stdout", buf):
                 code = hig.cmd_verify(type("Args", (), {"citation": "layout#Size-classes", "no_cache": False})())
             self.assertEqual(code, 0)
             self.assertIn("VALID: Layout > Size classes", buf.getvalue())
 
+            # Test full URL with anchor
+            buf_url = io.StringIO()
+            with patch("sys.stdout", buf_url):
+                code_url = hig.cmd_verify(
+                    type("Args", (), {"citation": "https://developer.apple.com/design/human-interface-guidelines/layout#Size-classes", "no_cache": False})()
+                )
+            self.assertEqual(code_url, 0)
+            self.assertIn("VALID: Layout > Size classes", buf_url.getvalue())
+
+            # Test .json endpoint with anchor
+            buf_json = io.StringIO()
+            with patch("sys.stdout", buf_json):
+                code_json = hig.cmd_verify(
+                    type("Args", (), {"citation": "layout.json#Size-classes", "no_cache": False})()
+                )
+            self.assertEqual(code_json, 0)
+            self.assertIn("VALID: Layout > Size classes", buf_json.getvalue())
+
+            # Test page only
+            buf_page = io.StringIO()
+            with patch("sys.stdout", buf_page):
+                code_page = hig.cmd_verify(type("Args", (), {"citation": "layout", "no_cache": False})())
+            self.assertEqual(code_page, 0)
+            self.assertIn("VALID: Layout", buf_page.getvalue())
+
+            # Test invalid anchor
             buf_err = io.StringIO()
             with patch("sys.stderr", buf_err):
                 code_invalid = hig.cmd_verify(
@@ -252,6 +313,15 @@ class TestHigNewCommands(unittest.TestCase):
                 )
             self.assertEqual(code_invalid, 1)
             self.assertIn("INVALID: anchor 'NonExistentAnchor' not found", buf_err.getvalue())
+
+            # Test empty / missing slug
+            buf_empty = io.StringIO()
+            with patch("sys.stderr", buf_empty):
+                code_empty = hig.cmd_verify(
+                    type("Args", (), {"citation": "#Size-classes", "no_cache": False})()
+                )
+            self.assertEqual(code_empty, 1)
+            self.assertIn("INVALID: citation must include a valid page slug", buf_empty.getvalue())
 
     def test_search_command(self):
         mock_index = {

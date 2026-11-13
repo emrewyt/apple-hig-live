@@ -39,7 +39,7 @@ function Install-One([string]$t) {
 }
 
 if ($Target -eq "all") {
-  "claude", "codex", "antigravity", "gemini" | ForEach-Object { Install-One $_ }
+  "claude", "codex", "antigravity", "gemini", "cursor" | ForEach-Object { Install-One $_ }
 } else {
   Install-One $Target
 }
