@@ -10,7 +10,7 @@
 
 If you discover a security issue or vulnerability within Apple HIG Live, please do not disclose it publicly on GitHub issues.
 
-Please email the project maintainer directly at `umutemreyilman66@gmail.com` with:
+Please email the project maintainer directly at `realwespcai@gmail.com` with:
 - A description of the issue.
 - Steps to reproduce.
 - Potential impact.
