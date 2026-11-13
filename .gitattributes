@@ -1,0 +1,8 @@
+# Git Line-Ending Normalization Policy for apple-hig-live
+* text=auto eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.svg text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf

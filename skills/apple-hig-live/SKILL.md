@@ -1,6 +1,6 @@
 ---
 name: apple-hig-live
-description: Design, mock up and audit native-feeling Apple-platform UI (iOS, iPadOS, macOS, watchOS, tvOS, visionOS) from the live, current Apple Human Interface Guidelines and SF Symbols. Apple's design pages are JavaScript-rendered and look blank to a normal web fetch, so this skill reads them through Apple's JSON endpoints with a bundled script and cites the HIG page behind every decision. Use whenever the user mentions HIG, Human Interface Guidelines, Apple design, SwiftUI/UIKit/AppKit screens, Liquid Glass, SF Symbols, SF Pro, Dynamic Type, safe areas, tab bars, sidebars, toolbars, or asks for an "iOS-style", "native" or "Apple-like" UI or a design review, even if they never say "HIG".
+description: Design, mock up and audit native-feeling Apple-platform UI (iOS, iPadOS, macOS, watchOS, tvOS, visionOS) from the live, current Apple Human Interface Guidelines, authentic Liquid Glass optical physics, and SF Symbols. Apple's design pages are JavaScript-rendered and look blank to a normal web fetch, so this skill reads them through Apple's JSON endpoints with a bundled script and cites the HIG page behind every decision. Mandates genuine Liquid Glass physics (Snell refraction, Abbe dispersion, Fresnel specular rims) over flat CSS blur, authentic native Apple components (segmented controls, standard push/pop-up buttons), and professional designer-grade SVGs.
 ---
 
 # Apple HIG Live
@@ -17,6 +17,21 @@ Design from the real, current HIG instead of memory. Apple's design site renders
 4. **System first:** SF Symbols for icons, system colors, system font with text styles. Custom only with a stated reason.
 5. **Never invent SF Symbol names.** Use names from `references/sf-symbols.md` or ones the user supplied; mark anything else `verify in SF Symbols app`.
 6. If HIG access fails, say so and mark the affected decisions `UNVERIFIED`. Never fabricate a citation.
+7. **Authentic Liquid Glass Optical Physics:** Never accept flat CSS blur as Liquid Glass. When specifying or implementing Liquid Glass, enforce genuine optical physics:
+   - Snell's Law refraction ($n = 1.520$) with perimeter coordinate displacement.
+   - Abbe chromatic dispersion ($V_d = 58.6$) with subtle spectral fringing.
+   - Schlick Fresnel reflectivity ($R_0 \approx 4.3\%$, $R_{90^\circ} \approx 98.5\%$) via multi-stop specular rims.
+   - System variants: `regular` (for navigation/sidebars) vs `clear` (for media HUDs with mandatory 35% dimming layer `rgba(0,0,0,0.35)`).
+   - Strict functional layer placement: NEVER use Liquid Glass in the content layer or app backgrounds.
+   - *Reference:* `references/liquid-glass-physics.md`.
+8. **Strict Apple Component Architecture:**
+   - Use native segmented controls (monolithic container with sliding elevated pill indicator, 2px padding, equal-width segments), standard push buttons, tinted prominent buttons (max 1 per view), and pop-up/pull-down buttons.
+   - Strictly forbid non-Apple patterns: custom slider dispersion bars, unrounded rectangular tabs, non-Apple toggles, and arbitrary saturated gradients.
+   - *Reference:* `references/components-and-controls.md`.
+9. **Designer-Grade Vector Iconography:**
+   - Vector SVGs must adhere to SF Symbols geometric proportions, standard `viewBox="0 0 24 24"`, semantic `<g id="...">` layers, cubic Bézier curvature, and Apple spring transitions (`cubic-bezier(0.16, 1, 0.3, 1)`).
+   - *Reference:* `references/designer-svg-standards.md`.
+10. **Layer Separation:** Never apply Liquid Glass to the content layer; reserve it strictly for functional floating navigation layers (tab bars, sidebars, floating HUD decks).
 
 ## Workflow
 
@@ -41,7 +56,11 @@ python3 <SKILL_DIR>/scripts/hig.py page layout --section "Size classes"
 - Pages end with "Related" links shown as `(-> slug)`; follow them when a component depends on another.
 - Output starts with `Last updated:` when Apple provides it. Prefer newer guidance (e.g. Liquid Glass) over anything you remember.
 
-**4. Design / implement.** Start from system components; deviate only where the HIG allows. For non-Apple targets (WPF, Electron, web) read `references/non-apple-targets.md` first.
+**4. Design / implement.** Start from system components; deviate only where the HIG allows.
+- **Controls & Navigation:** Consult `references/components-and-controls.md`. Use native segmented controls (28px/32px, equal width, sliding card indicator), push buttons (24px/28px, 6px radius), max 1 prominent button, native switches (38x22px in rows), and native sliders (4px track).
+- **Materials:** Consult `references/liquid-glass-physics.md`. Apply Liquid Glass to functional navigation layers only.
+- **Icons & Graphics:** Consult `references/designer-svg-standards.md` for SF Symbols alignment, squircle math, and SVG architecture.
+For non-Apple targets (WPF, Electron, web) read `references/non-apple-targets.md` first.
 
 **5. Cite and self-check.**
 Verify citations with `python3 <SKILL_DIR>/scripts/hig.py verify <slug>#<Anchor>` to guarantee 100% verified anchors without hallucinations.
@@ -68,6 +87,10 @@ Verify each against the fetched pages, not memory:
 - Icons are SF Symbols with consistent weight and rendering mode.
 - Touch / pointer target sizes match the numbers on the fetched page.
 - Platform-specific considerations for each target platform were read.
+- Liquid Glass components use authentic optical physics (refraction, dispersion, Fresnel specular borders) and appear only in the functional navigation layer.
+- Clear Liquid Glass includes the mandatory 35% dark dimming layer over rich media.
+- Controls adhere strictly to native Apple patterns (segmented controls, standard push/pop-up buttons) with zero forbidden custom slider/toggle shapes.
+- Icons are professional designer-grade SVGs adhering to SF Symbols proportions and cubic Béziers.
 
 ## Failure handling
 
@@ -81,5 +104,8 @@ Verify each against the fetched pages, not memory:
 
 - `references/page-map.md` — task → HIG slugs
 - `references/sf-symbols.md` — naming, variants, rendering modes, common symbol names, usage snippets
+- `references/liquid-glass-physics.md` — optical physics (Snell, Abbe, Fresnel, Beer-Lambert), regular vs clear variants, 35% dimming scrim, SVG/CSS implementation
+- `references/components-and-controls.md` — native Apple segmented controls, push/tinted buttons, pop-up buttons, native switches, forbidden patterns
+- `references/designer-svg-standards.md` — Figma/Illustrator tier SVG standards, squircle math, SF Symbols alignment, Apple spring motion curves
 - `references/non-apple-targets.md` — adapting HIG principles to WPF / Electron / web, plus licensing notes
 - `references/json-schema.md` — DocC JSON shape, for the curl fallback

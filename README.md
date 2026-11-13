@@ -62,6 +62,25 @@ Apple serves the exact same rich content through its official DocC JSON tutorial
 | **Full HIG Coverage** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Curated subsets only | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Entire HIG via dynamic index crawler** |
 | **Verifiable Citations** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Rare / fabricated | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Every single decision cites `slug#Anchor`** |
 | **Platform Filtering** (iOS, macOS, visionOS) | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> No | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **`--platform ios,macos` token trimmer** |
+| **Liquid Glass Optical Physics** (Refraction & Dispersion) | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Flat CSS `backdrop-filter: blur()` | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Snell's Law ($n=1.520$), Abbe ($V_d=58.6$), Fresnel Rims & SVG Dispersion** |
+| **Authentic Apple Controls** (Segmented, Switch, Push) | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Generic web toggles & neon glows | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Native Segmented Pill, 38×22px Switch, Push/Prominent Buttons** |
+| **Designer-Grade Vector & Animated SVGs** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Basic flat 1px wireframe shapes | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **$G^2$ Squircle Grid ($n=4.2$), Multi-Layer SF Symbols & CASpring Curves** |
+
+---
+
+## <img src="assets/icons/star.svg" width="22" height="22" align="center" alt="Deep Engineering" /> Deep Apple Engineering Pillars (v2.0 Upgrade)
+
+Beyond live DocC JSON fetching, **Apple HIG Live** equips AI coding agents with three deep optical, component, and vector engineering references:
+
+1. **Genuine Liquid Glass Optical Physics ([`liquid-glass-physics.md`](skills/apple-hig-live/references/liquid-glass-physics.md))**
+   - Replaces naive single-layer CSS blur with physical crown glass optics: **Snell's Law refraction** ($n_d = 1.520$, critical angle $\theta_c = 41.14^\circ$), **Abbe chromatic dispersion** ($V_d = 58.6$), **Schlick Fresnel specular rim lighting** ($R_0 = 4.26\%$), and **SVG `<feTurbulence>` + `<feDisplacementMap>`** (`#hig-liquid-glass-dispersion`).
+   - Enforces Apple's strict distinction between `.liquid-glass-regular` (navigation chrome, sidebars, toolbars) and `.liquid-glass-clear-hud` (transient floating media HUDs over a mandatory 35% dimming scrim).
+2. **Authentic Apple Components & Anti-Pattern Governance ([`components-and-controls.md`](skills/apple-hig-live/references/components-and-controls.md))**
+   - Pixel-accurate blueprints for native **Segmented Controls** (`.apple-segmented-control` with a spring-animated sliding pill `.apple-segment-indicator`), **Standard Switches** (`.apple-switch`, 38×22px track with 18×18px physical thumb), **Continuous Sliders** (`.apple-slider`, 4px track / 20px thumb), and **Push / Prominent Buttons** (`.apple-button-push`, `.apple-button-prominent`).
+   - Explicitly bans non-Apple hallucinated patterns (custom `.liquid-toggle` bars, glass-pill sliders, neon `box-shadow` glows, and nested glass-on-glass hierarchies).
+3. **Illustrator / Figma / Framer-Caliber Designer SVGs ([`designer-svg-standards.md`](skills/apple-hig-live/references/designer-svg-standards.md))**
+   - **macOS App Icon Squircle Geometry:** Exact Lamé superellipse ($|x/a|^{4.2} + |y/b|^{4.2} = 1$) $G^2$ curvature-continuous 12-anchor cubic Bézier path on a `1024×1024` canvas (`824×824` safe body) with a 4-tier optical drop-shadow stack.
+   - **Multi-Layer Hierarchical SF Symbols & CASpring Animation:** Variable stroke weights across 9 typographical weights, dual-layer `<g class="symbol-accent symbol-secondary">` + `<g class="symbol-primary">` architecture, and CoreAnimation `CASpringAnimation` physics (`mass: 1.0, stiffness: 300, damping: 24`).
 
 ---
 
@@ -214,12 +233,16 @@ apple-hig-live/
 │       ├── scripts/
 │       │   └── hig.py             # Zero-dependency DocC JSON parser & CLI
 │       └── references/
-│           ├── page-map.md        # Task-to-HIG slug mapping catalog
-│           ├── sf-symbols.md      # Verified SF Symbols catalog & guidelines
-│           ├── non-apple-targets.md # Adapting HIG to WPF, Electron, and Web
-│           └── json-schema.md     # DocC JSON schema specification
+│           ├── liquid-glass-physics.md      # Snell refraction, Abbe dispersion & Fresnel rims
+│           ├── components-and-controls.md   # Segmented controls, switches, sliders & buttons
+│           ├── designer-svg-standards.md    # G2 squircle geometry, multi-layer SF Symbols & CASpring
+│           ├── page-map.md                  # Task-to-HIG slug mapping catalog
+│           ├── sf-symbols.md                # Verified SF Symbols catalog & guidelines
+│           ├── non-apple-targets.md         # Adapting HIG to WPF, Electron, and Web
+│           └── json-schema.md               # DocC JSON schema specification
 ├── tests/
-│   └── test_hig.py                # Comprehensive automated unit test suite
+│   ├── test_hig.py                # Automated CLI unit test suite
+│   └── test_e2e_specs.py          # End-to-end optical physics, SVG & HIG specification suite
 ├── install.sh                     # Linux / macOS installer
 ├── install.ps1                    # Windows PowerShell installer
 ├── PROMPTS.md                     # Copy-paste prompts (TR & EN)
