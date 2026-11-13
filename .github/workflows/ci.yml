@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -p "test_*.py"
+      - name: Test CLI help and commands
+        run: |
+          python skills/apple-hig-live/scripts/hig.py --help
+          python skills/apple-hig-live/scripts/hig.py prompt --lang tr
+          python skills/apple-hig-live/scripts/hig.py prompt --lang en
+          python skills/apple-hig-live/scripts/hig.py symbols gear
