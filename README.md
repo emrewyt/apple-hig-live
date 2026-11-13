@@ -1,4 +1,8 @@
-# 🍎 Apple HIG Live: Apple Human Interface Guidelines Skill for AI Coding Agents
+<p align="center">
+  <img src="assets/banner.svg" alt="Apple HIG Live: Live Human Interface Guidelines & SF Symbols for AI Coding Agents" width="100%" />
+</p>
+
+# <img src="assets/icons/apple.svg" width="28" height="28" align="center" alt="Apple" /> Apple HIG Live: Apple Human Interface Guidelines Skill for AI Coding Agents
 
 **Teach your AI coding agent the entire Apple Human Interface Guidelines (HIG), live.** Design authentic, native iOS, iPadOS, macOS, watchOS, tvOS and visionOS interfaces with SF Symbols, system colors, SF Pro typography and Liquid Glass — straight from Apple's current docs, with every decision cited to its exact HIG page and anchor.
 
@@ -14,18 +18,18 @@
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
 
-> ⭐ **Star this repository** if you care about native, high-grade Apple design and want your AI agents to stop hallucinating UI rules!
+> <img src="assets/icons/star.svg" width="18" height="18" align="center" alt="Star" /> **Star this repository** if you care about native, high-grade Apple design and want your AI agents to stop hallucinating UI rules!
 
 ---
 
-## ⚡ The Problem: Why AI Agents Fail on Apple HIG
+## <img src="assets/icons/bolt.svg" width="22" height="22" align="center" alt="Problem" /> The Problem: Why AI Agents Fail on Apple HIG
 
 When you prompt an AI agent (Claude Code, ChatGPT, Codex, Antigravity) to *"design this screen following Apple's HIG"*, it usually produces generic, outdated, or hallucinated designs. Why?
 
 **Apple's official design website (`developer.apple.com/design`) is rendered purely with client-side JavaScript.** 
 When an AI agent opens the URL, it receives an empty HTML shell. (We tested 7 pages across Apple's design docs — all 7 returned completely blank!) As a result, agents hallucinate non-existent modifiers, invent fake SF Symbol names, or apply web patterns to native iOS/macOS apps.
 
-### 💡 The Solution: Real-Time DocC JSON Endpoints
+### <img src="assets/icons/bulb.svg" width="20" height="20" align="center" alt="Solution" /> The Solution: Real-Time DocC JSON Endpoints
 
 Apple serves the exact same rich content through its official DocC JSON tutorial API:
 - **Index:** `https://developer.apple.com/tutorials/data/design/human-interface-guidelines.json`
@@ -37,18 +41,31 @@ Apple serves the exact same rich content through its official DocC JSON tutorial
 3. **Automated Citation & Verification (`hig.py verify`)** ensuring zero hallucinations.
 4. **Offline Resilience:** 24h page caching and 7d index caching with automatic fallback.
 
+```text
+┌────────────────────────┐      ┌───────────────────────────┐      ┌─────────────────────────────┐
+│  Developer / AI Agent  │ ───► │  Apple HIG Live (hig.py)  │ ───► │  Apple DocC JSON Endpoints  │
+│  "Design settings UI"  │      │  Zero-Dep Python Runtime  │      │  developer.apple.com/...    │
+└────────────────────────┘      └───────────────────────────┘      └─────────────────────────────┘
+                                              │                                   │
+                                              ▼                                   ▼
+                                ┌───────────────────────────┐      ┌─────────────────────────────┐
+                                │ Token-Optimized Markdown  │ ◄─── │  Raw JSON Content Stripped  │
+                                │ Slug & Anchor Validation  │      │  Images & Bloat Excluded    │
+                                └───────────────────────────┘      └─────────────────────────────┘
+```
+
 | Feature | Static HIG Copies / Cheat Sheets | **Apple HIG Live** |
 |---|---|---|
-| **Always Up-to-Date** (Liquid Glass, iOS 18+, visionOS) | ❌ Frozen at copy time | ✅ **Live runtime fetch, cached 24h** |
-| **Apple Copyright Infringement** | ❌ Redistributes Apple's text | ✅ **None (fetched dynamically on-demand)** |
-| **Repo Size & Maintenance** | ❌ Hundreds of markdown files to sync | ✅ **Single script, 0 external deps** |
-| **Full HIG Coverage** | ❌ Curated subsets only | ✅ **Entire HIG via dynamic index crawler** |
-| **Verifiable Citations** | ❌ Rare / fabricated | ✅ **Every single decision cites `slug#Anchor`** |
-| **Platform Filtering** (iOS, macOS, visionOS) | ❌ No | ✅ **`--platform ios,macos` token trimmer** |
+| **Always Up-to-Date** (Liquid Glass, iOS 18+, visionOS) | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Frozen at copy time | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Live runtime fetch, cached 24h** |
+| **Apple Copyright Infringement** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Redistributes Apple's text | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **None (fetched dynamically on-demand)** |
+| **Repo Size & Maintenance** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Hundreds of markdown files to sync | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Single script, 0 external deps** |
+| **Full HIG Coverage** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Curated subsets only | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Entire HIG via dynamic index crawler** |
+| **Verifiable Citations** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Rare / fabricated | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Every single decision cites `slug#Anchor`** |
+| **Platform Filtering** (iOS, macOS, visionOS) | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> No | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **`--platform ios,macos` token trimmer** |
 
 ---
 
-## 🚀 Quick Install
+## <img src="assets/icons/rocket.svg" width="22" height="22" align="center" alt="Install" /> Quick Install
 
 ### Method 1: `npx skills`
 ```bash
@@ -63,7 +80,7 @@ Clone the repo and run the installer for your target agents:
 git clone https://github.com/emrewyt/apple-hig-live.git
 cd apple-hig-live
 
-# macOS / Linux (All agents: Claude Code, Antigravity, Codex, Gemini)
+# macOS / Linux (All agents: Claude Code, Antigravity, Codex, Gemini, Cursor)
 ./install.sh all
 
 # Or install for a specific agent in project scope:
@@ -92,11 +109,11 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -Target claude -Scope pro
 
 ---
 
-## 📋 Ready-to-Use Prompts (Zero Install Option)
+## <img src="assets/icons/prompt.svg" width="22" height="22" align="center" alt="Prompts" /> Ready-to-Use Prompts (Zero Install Option)
 
 Don't want to install anything? You can copy-paste the official prompt directly into **ChatGPT (GPT-4o)**, **Claude Code**, **Cursor**, or **Windsurf**:
 
-### 🇹🇷 Türkçe Prompt
+### <img src="assets/icons/flag-tr.svg" width="18" height="18" align="center" alt="Turkish" /> Türkçe Prompt
 ```text
 Uygulamamın ekranlarını Apple'ın Human Interface Guidelines (HIG) kurallarına göre tasarla.
 
@@ -108,7 +125,7 @@ Sayfaları web sitesinden değil, doğrudan Apple'ın JSON adreslerinden oku:
 5. Hafızandan veya tahminle kural uydurma; aldığın tüm değer ve prensipleri JSON'dan doğrulayarak aktar.
 ```
 
-### 🇺🇸 English Prompt
+### <img src="assets/icons/flag-en.svg" width="18" height="18" align="center" alt="English" /> English Prompt
 ```text
 Design my app's screens according to Apple's Human Interface Guidelines (HIG).
 
@@ -124,7 +141,7 @@ Read the guidelines directly from Apple's official JSON endpoints, not the web i
 
 ---
 
-## 🛠️ CLI Reference (`skills/apple-hig-live/scripts/hig.py`)
+## <img src="assets/icons/terminal.svg" width="22" height="22" align="center" alt="CLI" /> CLI Reference (`skills/apple-hig-live/scripts/hig.py`)
 
 The bundled standalone CLI works with **Python 3.8+** using **only the standard library**.
 
@@ -154,7 +171,7 @@ python hig.py prompt --lang en
 
 ---
 
-## 🔍 Verifiable Decision Audit Trail
+## <img src="assets/icons/audit.svg" width="22" height="22" align="center" alt="Audit" /> Verifiable Decision Audit Trail
 
 Every design produced by an agent using this skill ends with a structured decision log:
 
@@ -167,7 +184,7 @@ Every design produced by an agent using this skill ends with a structured decisi
 
 ---
 
-## 🖥️ Building for Windows (WPF .NET 8), Electron or Web?
+## <img src="assets/icons/desktop.svg" width="22" height="22" align="center" alt="Desktop" /> Building for Windows (WPF .NET 8), Electron or Web?
 
 Apple HIG Live is not just for iOS developers! It is widely used by developers who want to bring **Apple-grade design polish and discipline** to **WPF (.NET 8)**, **Electron**, and **React/Tailwind** apps.
 
@@ -177,13 +194,20 @@ Apple HIG Live is not just for iOS developers! It is widely used by developers w
 
 ---
 
-## 📂 Project Structure
+## <img src="assets/icons/folder.svg" width="22" height="22" align="center" alt="Structure" /> Project Structure
 
 ```text
 apple-hig-live/
 ├── .github/
 │   ├── workflows/ci.yml           # Automated cross-platform tests (Py 3.8-3.12)
 │   └── ISSUE_TEMPLATE/            # Bug reports and feature requests
+├── assets/
+│   ├── banner.svg                 # High-resolution vector hero banner
+│   └── icons/                     # Crisp Apple-style vector iconography
+│       ├── apple.svg, star.svg, bolt.svg, bulb.svg, rocket.svg
+│       ├── terminal.svg, prompt.svg, audit.svg, desktop.svg
+│       ├── folder.svg, test.svg, shield.svg, document.svg, user.svg
+│       └── check.svg, xmark.svg, flag-tr.svg, flag-en.svg
 ├── skills/
 │   └── apple-hig-live/
 │       ├── SKILL.md               # Standard skill contract for AI agents
@@ -208,7 +232,7 @@ apple-hig-live/
 
 ---
 
-## 🧪 Testing & Verification
+## <img src="assets/icons/test.svg" width="22" height="22" align="center" alt="Testing" /> Testing & Verification
 
 Run the test suite locally:
 ```bash
@@ -217,7 +241,7 @@ python -m unittest discover -s tests -p "test_*.py"
 
 ---
 
-## ⚖️ Disclaimer
+## <img src="assets/icons/shield.svg" width="22" height="22" align="center" alt="Disclaimer" /> Disclaimer
 
 **Apple HIG Live** is an independent open-source developer tool and is **not** affiliated with, endorsed by, or sponsored by Apple Inc. 
 Apple, iOS, iPadOS, macOS, watchOS, tvOS, visionOS, SF Symbols, SF Pro, and Liquid Glass are registered trademarks of Apple Inc. 
@@ -225,13 +249,13 @@ Content is fetched dynamically at runtime from Apple's public servers and is nev
 
 ---
 
-## 📄 License
+## <img src="assets/icons/document.svg" width="22" height="22" align="center" alt="License" /> License
 
 Licensed under the [MIT License](LICENSE).
 
 ---
 
-### 👨‍💻 Created by
+### <img src="assets/icons/user.svg" width="20" height="20" align="center" alt="Author" /> Created by
 **Emre** ([@emrewyt](https://github.com/emrewyt)) · Founder of **FLUVEA**
 
 <sub>**SEO Keywords & Search Indexing:** Apple Human Interface Guidelines, Apple HIG, iOS design system, SwiftUI agent, Claude Code skill, Antigravity 2.0 skill, Codex skill, Gemini CLI skill, SF Symbols, Liquid Glass design, Apple design guidelines, visionOS development, macOS app design, native UI/UX design, AI coding assistant, SKILL.md specification.</sub>
