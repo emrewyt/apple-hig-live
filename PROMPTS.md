@@ -23,7 +23,7 @@ Sayfaları web sitesinden değil, doğrudan Apple'ın JSON adreslerinden oku:
 ### 2. SwiftUI Ekran Tasarımı & Mimari İnceleme
 ```text
 SwiftUI ile geliştirdiğim [Ekran Adı / Akış] ekranını Apple HIG standartlarına göre sıfırdan tasarla veya refactor et.
-- Hedef platformlar: iOS 18+ (iPadOS uyumlu)
+- Hedef platformlar: iOS 27+ (iPadOS uyumlu)
 - Bileşen hiyerarşisi: Liquid Glass malzemeleri, navigation bar / toolbar, safe area boşlukları.
 - Dinamik Tipler: Body için .body, başlıklar için semantik text style.
 - SF Symbols: Yalnızca doğrulanmış SF Symbol isimleri kullan, rendering modlarını belirt (.hierarchical / .tint).
@@ -59,7 +59,7 @@ Read the guidelines directly from Apple's official JSON endpoints, not the web i
 ### 2. SwiftUI Screen Design & Audit
 ```text
 Design and implement the [Screen Name] view in SwiftUI following the current Apple HIG.
-- Targets: iOS 18+, iPadOS 18+ adaptive layout.
+- Targets: iOS 27+, iPadOS adaptive layout.
 - Controls: Tab bar navigation, toolbar items, modal sheets, and safe area insets.
 - Visuals: Standard materials and Liquid Glass layering where appropriate.
 - Icons: Valid SF Symbols only with .hierarchical or .palette rendering modes.

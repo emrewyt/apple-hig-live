@@ -56,7 +56,7 @@ Apple serves the exact same rich content through its official DocC JSON tutorial
 
 | Feature | Static HIG Copies / Cheat Sheets | **Apple HIG Live** |
 |---|---|---|
-| **Always Up-to-Date** (Liquid Glass, iOS 18+, visionOS) | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Frozen at copy time | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Live runtime fetch, cached 24h** |
+| **Always Up-to-Date** (Liquid Glass, iOS 27+, visionOS) | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Frozen at copy time | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Live runtime fetch, cached 24h** |
 | **Apple Copyright Infringement** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Redistributes Apple's text | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **None (fetched dynamically on-demand)** |
 | **Repo Size & Maintenance** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Hundreds of markdown files to sync | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Single script, 0 external deps** |
 | **Full HIG Coverage** | <img src="assets/icons/xmark.svg" width="14" height="14" alt="No" /> Curated subsets only | <img src="assets/icons/check.svg" width="14" height="14" alt="Yes" /> **Entire HIG via dynamic index crawler** |
